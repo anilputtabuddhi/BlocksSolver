@@ -9,11 +9,22 @@
 /* Begin PBXBuildFile section */
 		4D7A646024DB1BE1004342C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A645F24DB1BE1004342C0 /* AppDelegate.swift */; };
 		4D7A646224DB1BE1004342C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A646124DB1BE1004342C0 /* SceneDelegate.swift */; };
-		4D7A646424DB1BE1004342C0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A646324DB1BE1004342C0 /* ContentView.swift */; };
 		4D7A646624DB1BE4004342C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D7A646524DB1BE4004342C0 /* Assets.xcassets */; };
 		4D7A646924DB1BE4004342C0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D7A646824DB1BE4004342C0 /* Preview Assets.xcassets */; };
 		4D7A646C24DB1BE4004342C0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D7A646A24DB1BE4004342C0 /* LaunchScreen.storyboard */; };
 		4D7A647724DB1BE5004342C0 /* BlocksSolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A647624DB1BE5004342C0 /* BlocksSolverTests.swift */; };
+		4D7A648224DB1C00004342C0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648124DB1C00004342C0 /* Game.swift */; };
+		4D7A648424DB3E80004342C0 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648324DB3E80004342C0 /* Board.swift */; };
+		4D7A648A24DB6F3A004342C0 /* ZobritHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648924DB6F3A004342C0 /* ZobritHash.swift */; };
+		4D7A648C24DBF916004342C0 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648B24DBF916004342C0 /* Block.swift */; };
+		4D7A648E24DBF932004342C0 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648D24DBF932004342C0 /* Size.swift */; };
+		4D7A649024DBF947004342C0 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648F24DBF947004342C0 /* Position.swift */; };
+		4D7A649224DBF95D004342C0 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A649124DBF95D004342C0 /* Move.swift */; };
+		4D7A649524DBF9BB004342C0 /* Solver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A649424DBF9BB004342C0 /* Solver.swift */; };
+		4D7A649924DD8178004342C0 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A649824DD8178004342C0 /* BlockView.swift */; };
+		4D7A649B24DD8426004342C0 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A649A24DD8426004342C0 /* BoardView.swift */; };
+		4D7A649D24DD921A004342C0 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A649C24DD921A004342C0 /* GameView.swift */; };
+		4D7A649E24DD9736004342C0 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648524DB4882004342C0 /* GameState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +41,6 @@
 		4D7A645C24DB1BE1004342C0 /* BlocksSolver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocksSolver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D7A645F24DB1BE1004342C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D7A646124DB1BE1004342C0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		4D7A646324DB1BE1004342C0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4D7A646524DB1BE4004342C0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D7A646824DB1BE4004342C0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4D7A646B24DB1BE4004342C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -38,6 +48,18 @@
 		4D7A647224DB1BE5004342C0 /* BlocksSolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocksSolverTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D7A647624DB1BE5004342C0 /* BlocksSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksSolverTests.swift; sourceTree = "<group>"; };
 		4D7A647824DB1BE5004342C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4D7A648124DB1C00004342C0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		4D7A648324DB3E80004342C0 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		4D7A648524DB4882004342C0 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		4D7A648924DB6F3A004342C0 /* ZobritHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZobritHash.swift; sourceTree = "<group>"; };
+		4D7A648B24DBF916004342C0 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		4D7A648D24DBF932004342C0 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		4D7A648F24DBF947004342C0 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		4D7A649124DBF95D004342C0 /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		4D7A649424DBF9BB004342C0 /* Solver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solver.swift; sourceTree = "<group>"; };
+		4D7A649824DD8178004342C0 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
+		4D7A649A24DD8426004342C0 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		4D7A649C24DD921A004342C0 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +103,10 @@
 			children = (
 				4D7A645F24DB1BE1004342C0 /* AppDelegate.swift */,
 				4D7A646124DB1BE1004342C0 /* SceneDelegate.swift */,
-				4D7A646324DB1BE1004342C0 /* ContentView.swift */,
+				4D7A649824DD8178004342C0 /* BlockView.swift */,
+				4D7A649A24DD8426004342C0 /* BoardView.swift */,
+				4D7A649C24DD921A004342C0 /* GameView.swift */,
+				4D7A649324DBF97A004342C0 /* Models */,
 				4D7A646524DB1BE4004342C0 /* Assets.xcassets */,
 				4D7A646A24DB1BE4004342C0 /* LaunchScreen.storyboard */,
 				4D7A646D24DB1BE4004342C0 /* Info.plist */,
@@ -105,6 +130,22 @@
 				4D7A647824DB1BE5004342C0 /* Info.plist */,
 			);
 			path = BlocksSolverTests;
+			sourceTree = "<group>";
+		};
+		4D7A649324DBF97A004342C0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4D7A648124DB1C00004342C0 /* Game.swift */,
+				4D7A648324DB3E80004342C0 /* Board.swift */,
+				4D7A648B24DBF916004342C0 /* Block.swift */,
+				4D7A648D24DBF932004342C0 /* Size.swift */,
+				4D7A648F24DBF947004342C0 /* Position.swift */,
+				4D7A649124DBF95D004342C0 /* Move.swift */,
+				4D7A648924DB6F3A004342C0 /* ZobritHash.swift */,
+				4D7A648524DB4882004342C0 /* GameState.swift */,
+				4D7A649424DBF9BB004342C0 /* Solver.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,9 +249,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D7A648A24DB6F3A004342C0 /* ZobritHash.swift in Sources */,
+				4D7A648C24DBF916004342C0 /* Block.swift in Sources */,
+				4D7A649524DBF9BB004342C0 /* Solver.swift in Sources */,
+				4D7A649924DD8178004342C0 /* BlockView.swift in Sources */,
+				4D7A649D24DD921A004342C0 /* GameView.swift in Sources */,
 				4D7A646024DB1BE1004342C0 /* AppDelegate.swift in Sources */,
 				4D7A646224DB1BE1004342C0 /* SceneDelegate.swift in Sources */,
-				4D7A646424DB1BE1004342C0 /* ContentView.swift in Sources */,
+				4D7A648E24DBF932004342C0 /* Size.swift in Sources */,
+				4D7A649B24DD8426004342C0 /* BoardView.swift in Sources */,
+				4D7A648424DB3E80004342C0 /* Board.swift in Sources */,
+				4D7A648224DB1C00004342C0 /* Game.swift in Sources */,
+				4D7A649E24DD9736004342C0 /* GameState.swift in Sources */,
+				4D7A649024DBF947004342C0 /* Position.swift in Sources */,
+				4D7A649224DBF95D004342C0 /* Move.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

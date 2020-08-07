@@ -11,24 +11,123 @@ import XCTest
 
 class BlocksSolverTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+    let blocks = [
+        Block("B", size: Size(2, 2), position: Position(0, 1)), //B
+        Block("A", size: Size(2, 1), position: Position(0, 0)), //A
+        Block("C", size: Size(2, 1), position: Position(0, 3)), //C
+        Block("D", size: Size(2, 1), position: Position(2, 0)), //D
+        Block("F", size: Size(2, 1), position: Position(2, 3)), //F
+        Block("E", size: Size(1, 2), position: Position(2, 1)), //E
+        Block("I", size: Size(1, 1), position: Position(4, 0)), //I
+        Block("G", size: Size(1, 1), position: Position(3, 1)), //G
+        Block("H", size: Size(1, 1), position: Position(3, 2)), //H
+        Block("J", size: Size(1, 1), position: Position(4, 3))  //J
+    ]
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    let blockSizeTypes = [
+        "1_1": 0,
+        "1_2": 1,
+        "2_1": 2,
+        "2_2": 3,
+    ]
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testZobritHashInitialise() {
+        let game = Game.createGame(
+            blocks: blocks,
+            size: Size(5, 4),
+            masterGoalPosition: Position(3, 1),
+            masterBlockIdx: 0
+        )
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        let zobHashTable = ZobritHashTable.createFor(game: game!)
+
+        XCTAssertTrue(zobHashTable.table.count == 5)
+        zobHashTable.table.forEach { (row) in
+            XCTAssertTrue(row.count == 4)
+            row.forEach{ col in
+                XCTAssertTrue(row.count == 4)
+            }
         }
+    }
+
+    func testStateCreation() {
+
+        let game = Game.createGame(
+            blocks: blocks,
+            size: Size(5, 4),
+            masterGoalPosition: Position(3, 1),
+            masterBlockIdx: 0
+        )
+        let zobHashTable = ZobritHashTable.createFor(game: game!)
+
+        let state = GameState.createInitialStateWith(
+            game: game!,
+            zhashTable: zobHashTable
+        )
+        XCTAssertNotNil(state)
+    }
+
+    func testGameCreation() {
+
+        let game = Game.createGame(
+            blocks: blocks,
+            size: Size(5, 4),
+            masterGoalPosition: Position(3, 1),
+            masterBlockIdx: 0
+        )
+        XCTAssertNotNil(game)
+    }
+
+    func testSolver() {
+        let solver = BlocksMoveSolver(game: Game.klotski)!
+        let result = solver.solve()
+        if case .success(let moves) = result {
+            XCTAssertEqual(moves.count, 117)
+        } else {
+            XCTFail("Expected success")
+        }
+    }
+
+    func testHashSameWhenBoardConfigSymmetrical() {
+
+        let game = Game.createGame(
+            blocks: blocks,
+            size: Size(5, 4),
+            masterGoalPosition: Position(3, 1),
+            masterBlockIdx: 0
+        )
+
+        let zobHashTable = ZobritHashTable.createFor(game: game!)
+
+        let state = GameState.createInitialStateWith(
+            game: game!,
+            zhashTable: zobHashTable
+        )!
+
+        XCTAssertEqual(state.hash, state.hashMirror)
+    }
+
+    func testHashDifferentWhenBoardConfigASymmetrically() {
+        var localBlocks = blocks
+        localBlocks[8] = Block("H", size: Size(1, 1), position: Position(4, 2))
+        localBlocks[7] = Block("G", size: Size(1, 1), position: Position(3, 2)) 
+        localBlocks[8] = Block("I", size: Size(1, 1), position: Position(4, 1))
+
+        let game = Game.createGame(
+            blocks: localBlocks,
+            size: Size(5, 4),
+            masterGoalPosition: Position(3, 1),
+            masterBlockIdx: 0
+        )
+
+        let zobHashTable = ZobritHashTable.createFor(game: game!)
+
+        let state = GameState.createInitialStateWith(
+            game: game!,
+            zhashTable: zobHashTable
+        )!
+
+        XCTAssertNotEqual(state.hash, state.hashMirror)
     }
 
 }
