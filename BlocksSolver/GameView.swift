@@ -9,22 +9,34 @@
 import SwiftUI
 
 struct GameView: View {
-    let size: Size
-    let masterBlocklabel: String
 
-    @State var blockStates: [[Block]] = []
+    let game: Game
+    var masterBlocklabel: String {
+        let masterBlock = game.blocks[game.masterBlockIdx]
+        return masterBlock.label
+    }
+
+    @State var gameStates: [GameState]
     @State var index: Int = 0
-    @State var loading: Bool = true
-    @State var failed: Bool = false
+    @State var loading  = true
+    @State var failed  = false
+
 
     var body: some View {
-        VStack {
-            Text("Blocks Solver v1.0")
+        VStack(spacing: 20) {
+            Text(game.desc)
                 .font(.largeTitle)
+            BoardView(
+                boardSize: game.size,
+                blocks: gameStates[index].blocks,
+                masterBlocklabel: masterBlocklabel,
+                scaleFactor: 60.0
+            )
+
             if loading {
                 Text("Loading Solution")
                 .onAppear {
-                    self.solve(game: Game.klotski)
+                    self.solve()
                 }
                 ActivityIndicator(isAnimating: .constant(true), style: .large)
             } else if failed{
@@ -36,13 +48,7 @@ struct GameView: View {
                 }
 
             } else {
-                Text("Moves Remaining: \(blockStates.count - index - 1)")
-                BoardView(
-                    boardSize: size,
-                    blocks: blockStates[index],
-                    masterBlocklabel: masterBlocklabel,
-                    scaleFactor: 60.0
-                )
+                Text("Moves Remaining: \(gameStates.count - index - 1)")
                 HStack(alignment: .top) {
                     Spacer()
                     Button(action: {
@@ -54,7 +60,7 @@ struct GameView: View {
                     }
                     Spacer()
                     Button(action: {
-                        if self.index < self.blockStates.count - 1 {
+                        if self.index < self.gameStates.count - 1 {
                             self.index = self.index + 1
                         }
                     }) {
@@ -66,16 +72,17 @@ struct GameView: View {
         }
     }
 
-    private func solve(game: Game) {
+    private func solve() {
         DispatchQueue.global(qos: .background).async {
-            let solver = BlocksMoveSolver(game: game)!
+            let solver = BlocksMoveSolver(game: self.game)!
             DispatchQueue.main.async {
                 switch solver.solve() {
-                case .success(let blocks):
-                    self.blockStates = blocks
+                case .success(let gStates):
+                    self.gameStates = gStates
                     self.loading = false
                 case .failure:
                     self.failed = true
+                    self.loading = false
                 }
             }
 
@@ -86,8 +93,8 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(
-            size: Size(5, 4),
-            masterBlocklabel: "B"
+            game: Game.klotski,
+            gameStates: [GameState.createInitialStateWith(game: Game.klotski)!]
         )
     }
 }

@@ -19,6 +19,7 @@ struct ZobritHashTable{
     }
 
     static func createFor(game: Game) ->  ZobritHashTable {
+
         var table = [[[Int]]]()
         for _ in 0..<game.size.rows {
             var row = [[Int]]()

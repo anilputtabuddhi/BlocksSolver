@@ -8,43 +8,44 @@
 
 import Foundation
 
-class GameState {
-    let parent: GameState?
+final class GameState {
+
+    private let game: Game
+    private let zhashTable: ZobritHashTable
+    private let board: Board
+
+    let move: Move?
     let blocks: [Block]
-    let board: Board
-    var step: Int
-    let moveFromParent: Move?
     let hash: Int
     let hashMirror: Int
 
     init(
-        parent: GameState? = nil,
-        blocks: [Block],
+        game: Game,
+        zhashTable: ZobritHashTable,
         board: Board,
-        step: Int,
-        moveFromParent: Move? = nil,
+        move: Move?,
+        blocks: [Block],
         hash: Int,
         hashMirror: Int
     ){
-        self.parent = parent
-        self.blocks = blocks
+        self.game = game
+        self.zhashTable = zhashTable
         self.board = board
-        self.step = step
-        self.moveFromParent = moveFromParent
+        self.move = move
+        self.blocks = blocks
         self.hash = hash
         self.hashMirror = hashMirror
     }
 
-    static func createInitialStateWith(
-        game: Game,
-        zhashTable: ZobritHashTable
-    ) -> GameState? {
+    static func createInitialStateWith(game: Game) -> GameState? {
+
+        let zhashTable = ZobritHashTable.createFor(game: game)
 
         guard let board = Board.createBoard(
             for: game.size,
             with: game.blocks
-        ) else {
-            return nil
+            ) else {
+                return nil
         }
 
         let (hash, hashMirror) = zhashTable.getZobristHash(
@@ -55,107 +56,85 @@ class GameState {
         )
 
         return GameState(
-            blocks: game.blocks,
+            game: game,
+            zhashTable: zhashTable,
             board: board,
-            step: 0,
+            move: nil,
+            blocks: game.blocks,
             hash: hash,
             hashMirror: hashMirror
         )
     }
 
+    private func newStateWithPossibleMove(_ move: Move) -> GameState {
+        let block = blocks[move.blockIdx]
+
+        let (newHash, newHashMirror) =
+            zhashTable.getZobristHashUpdates(state: self, move: move)
+
+        var newBoard = board
+        newBoard = newBoard.remove(block)
+
+        let dir = Direction.allInCoordinates[move.direction.rawValue]
+        let newBlock = block.withNewPosition(
+            Position(
+                block.position.row + dir.y,
+                block.position.column + dir.x
+            )
+        )
+
+        newBoard = newBoard.placeBlock(newBlock, with: move.blockIdx)
+
+        var newBlocks = blocks
+        newBlocks[move.blockIdx] = newBlock
+
+        return GameState(
+            game: self.game,
+            zhashTable: self.zhashTable,
+            board: newBoard,
+            move: move,
+            blocks: newBlocks,
+            hash: newHash,
+            hashMirror: newHashMirror
+        )
+    }
+
 }
 
-extension GameState {
 
-    func searchNewStatesFrom(
-        zhashTable: ZobritHashTable,
-        zhashLookup: [Int: Bool]
-    ) -> [GameState] {
+//MARK: = GraphNode conformance for A-Star search implementation
 
-        let blockMoves = blocks.enumerated().map { id, _ in
-            Direction.allCases.map{ dir in
-                Move(blockIdx: id, direction: dir)
+extension GameState: GraphNode {
 
+    var connectedNodes: [GameState] {
+        let moves = blocks.enumerated().map { blockId, block in
+            return block.allowedDirections.map{ dir in
+                Move(blockIdx: blockId, direction: dir)
             }
+            .filter { move  in
+                board.can(block: blocks[move.blockIdx], move: move)
+            }
+
         }.reduce([], +)
 
-        return blockMoves.compactMap{
-            newStateWithPossibleMove(
-                move: $0,
-                zhashTable: zhashTable,
-                zhashLookup: zhashLookup
-            )
-        }
+        return moves.compactMap(newStateWithPossibleMove)
+        
     }
-    
-    private func newStateWithPossibleMove(
-         move: Move,
-         zhashTable: ZobritHashTable,
-         zhashLookup: [Int: Bool]
-    ) -> GameState? {
-         let block = blocks[move.blockIdx]
-         guard board.can(block: block, move: move) else {
-             return nil
-         }
 
-         let (newHash, newHashMirror) = zhashTable.getZobristHashUpdates(
-             state: self,
-             move: move
-         )
+    var estimatedCostToDestination: Int {
+        let masterBlockCurrentPosition = self.blocks[game.masterBlockIdx].position
+        return abs(masterBlockCurrentPosition.column - game.masterGoalPosition.column) +
+            abs(masterBlockCurrentPosition.row - game.masterGoalPosition.row)
 
-         guard zhashLookup[newHash] != true,
-             zhashLookup[newHashMirror] != true
-         else {
-             return nil
-         }
+    }
 
-         var newBoard = board
-         let dir = Direction.allInCoordinates[move.direction.rawValue]
+    func cost(to node: GameState) -> Int {
+        return 1
+    }
 
-         newBoard = newBoard.remove(block)
+    var isGoal: Bool {
+        return game.masterGoalPosition ==
+            blocks[game.masterBlockIdx].position
+    }
 
-         let newBlock = block.withNewPosition(
-             Position(
-                 block.position.row + dir.y,
-                 block.position.column + dir.x
-             )
-         )
-
-         newBoard = newBoard.placeBlock(newBlock, with: move.blockIdx)
-
-         var newBlocks = blocks
-         newBlocks[move.blockIdx] = newBlock
-
-         let newStep = step + 1
-
-         return GameState(
-             parent: self,
-             blocks: newBlocks,
-             board: newBoard,
-             step: newStep,
-             moveFromParent: move,
-             hash: newHash,
-             hashMirror: newHashMirror
-         )
-     }
 }
-
-//extension GameState: GraphNode {
-//    var connectedNodes: Set<GameState> {
-//        return self.searchNewStatesFrom
-//    }
-//
-//    func estimatedCost(to node: GameState) -> Float {
-//        return 0
-//    }
-//
-//    func cost(to node: GameState) -> Float {
-//        return 1.0
-//    }
-//
-//    static func == (lhs: GameState, rhs: GameState) -> Bool {
-//        lhs.hash == rhs.hash || lhs.hashMirror == rhs.hashMirror ||
-//            lhs.hash == rhs.hashMirror || lhs.hashMirror == rhs.hash
-//    }
-//
-//}

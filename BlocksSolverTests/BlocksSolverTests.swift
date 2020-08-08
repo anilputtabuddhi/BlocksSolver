@@ -58,12 +58,7 @@ class BlocksSolverTests: XCTestCase {
             masterGoalPosition: Position(3, 1),
             masterBlockIdx: 0
         )
-        let zobHashTable = ZobritHashTable.createFor(game: game!)
-
-        let state = GameState.createInitialStateWith(
-            game: game!,
-            zhashTable: zobHashTable
-        )
+        let state = GameState.createInitialStateWith(game: game!)
         XCTAssertNotNil(state)
     }
 
@@ -82,7 +77,7 @@ class BlocksSolverTests: XCTestCase {
         let solver = BlocksMoveSolver(game: Game.klotski)!
         let result = solver.solve()
         if case .success(let moves) = result {
-            XCTAssertEqual(moves.count, 107)
+            XCTAssertEqual(moves.count, 106)
         } else {
             XCTFail("Expected success")
         }
@@ -95,14 +90,9 @@ class BlocksSolverTests: XCTestCase {
             size: Size(5, 4),
             masterGoalPosition: Position(3, 1),
             masterBlockIdx: 0
-        )
-
-        let zobHashTable = ZobritHashTable.createFor(game: game!)
-
-        let state = GameState.createInitialStateWith(
-            game: game!,
-            zhashTable: zobHashTable
         )!
+
+        let state = GameState.createInitialStateWith(game: game)!
 
         XCTAssertEqual(state.hash, state.hashMirror)
     }
@@ -118,14 +108,9 @@ class BlocksSolverTests: XCTestCase {
             size: Size(5, 4),
             masterGoalPosition: Position(3, 1),
             masterBlockIdx: 0
-        )
-
-        let zobHashTable = ZobritHashTable.createFor(game: game!)
-
-        let state = GameState.createInitialStateWith(
-            game: game!,
-            zhashTable: zobHashTable
         )!
+
+        let state = GameState.createInitialStateWith(game: game)!
 
         XCTAssertNotEqual(state.hash, state.hashMirror)
     }
