@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Move {
+struct Move: Equatable {
     let blockIdx: Int
     let direction: Direction
 

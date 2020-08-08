@@ -52,7 +52,11 @@ extension BlocksMoveSolver {
             if isMasterInGoalPosition(state) {
                 return .success(getAllBlockPositionsToSolutionFrom(state))
             } else {
-                searchNewStatesFrom(state)
+                state.searchNewStatesFrom(
+                    zhashTable: zhashTable,
+                    zhashLookup: zhashLookup
+                )
+                .forEach(pushNewStateIfAlreadyNotVisited)
             }
         }
 
@@ -71,45 +75,19 @@ extension BlocksMoveSolver {
 
     private func getAllBlockPositionsToSolutionFrom(_ gameState: GameState) -> [[Block]]{
         var state: GameState? = gameState
-        var allStateBlocks: [[Block]] = []
+        var allStates: [GameState] = []
         while (state != nil) {
-            allStateBlocks.append(state!.blocks)
-            state = state!.parent
-        }
-        return allStateBlocks.reversed()
-    }
-
-    private func getMovesFrom(_ gameState: GameState) -> [Move]{
-        var state: GameState? = gameState
-        var moves: [Move] = []
-        while (state != nil) {
-            if (state!.step > 0) {
-                moves.append(state!.moveFromParent!)
+            if allStates.count == 0 {
+                allStates.append(state!)
+            } else {
+                //Skipping states for moving a block twice in the same direction
+                if state!.moveFromParent != allStates.last!.moveFromParent {
+                    allStates.append(state!)
+                }
             }
             state = state!.parent
         }
-        return moves.reversed()
-    }
-
-    private func searchNewStatesFrom(_ state: GameState) {
-
-        let blockMoves = state.blocks.enumerated().map { id, _ in
-            Direction.allCases.map{ dir in
-                Move(blockIdx: id, direction: dir)
-
-            }
-        }.reduce([], +)
-
-        let newPossibleStates = blockMoves.compactMap{
-            state.newStateWithPossibleMove(
-                move: $0,
-                zhashTable: zhashTable,
-                zhashLookup: zhashLookup
-            )
-        }
-
-        newPossibleStates.forEach(pushNewStateIfAlreadyNotVisited)
-
+        return allStates.map(\.blocks).reversed()
     }
     
     private func pushNewStateIfAlreadyNotVisited(_ state: GameState)  {

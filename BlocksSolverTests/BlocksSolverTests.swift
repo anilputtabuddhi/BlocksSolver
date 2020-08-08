@@ -82,7 +82,7 @@ class BlocksSolverTests: XCTestCase {
         let solver = BlocksMoveSolver(game: Game.klotski)!
         let result = solver.solve()
         if case .success(let moves) = result {
-            XCTAssertEqual(moves.count, 117)
+            XCTAssertEqual(moves.count, 107)
         } else {
             XCTFail("Expected success")
         }

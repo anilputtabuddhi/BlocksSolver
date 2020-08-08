@@ -40,7 +40,10 @@ class GameState {
         zhashTable: ZobritHashTable
     ) -> GameState? {
 
-        guard let board = Board.createBoard(for: game.size, with: game.blocks) else {
+        guard let board = Board.createBoard(
+            for: game.size,
+            with: game.blocks
+        ) else {
             return nil
         }
 
@@ -64,7 +67,28 @@ class GameState {
 
 extension GameState {
 
-    func newStateWithPossibleMove(
+    func searchNewStatesFrom(
+        zhashTable: ZobritHashTable,
+        zhashLookup: [Int: Bool]
+    ) -> [GameState] {
+
+        let blockMoves = blocks.enumerated().map { id, _ in
+            Direction.allCases.map{ dir in
+                Move(blockIdx: id, direction: dir)
+
+            }
+        }.reduce([], +)
+
+        return blockMoves.compactMap{
+            newStateWithPossibleMove(
+                move: $0,
+                zhashTable: zhashTable,
+                zhashLookup: zhashLookup
+            )
+        }
+    }
+    
+    private func newStateWithPossibleMove(
          move: Move,
          zhashTable: ZobritHashTable,
          zhashLookup: [Int: Bool]
@@ -115,3 +139,23 @@ extension GameState {
          )
      }
 }
+
+//extension GameState: GraphNode {
+//    var connectedNodes: Set<GameState> {
+//        return self.searchNewStatesFrom
+//    }
+//
+//    func estimatedCost(to node: GameState) -> Float {
+//        return 0
+//    }
+//
+//    func cost(to node: GameState) -> Float {
+//        return 1.0
+//    }
+//
+//    static func == (lhs: GameState, rhs: GameState) -> Bool {
+//        lhs.hash == rhs.hash || lhs.hashMirror == rhs.hashMirror ||
+//            lhs.hash == rhs.hashMirror || lhs.hashMirror == rhs.hash
+//    }
+//
+//}
