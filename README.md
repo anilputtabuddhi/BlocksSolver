@@ -1,6 +1,8 @@
 # BlocksSolver
 A sliding blocks puzzle solver with an algorithm that can solve most sliding block[rectangular shapes only] problems. 
 
+- Required Xcode 11.5 / iOS 13.5+
+
 - The UI shows the moves to take the master block to the goal position
 - Astar search algorithm for searching paths
 - Manhattan distance used as for calculation of cost to destination/goal.
