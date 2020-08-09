@@ -20,7 +20,7 @@ struct BoardView: View {
                 width: CGFloat(boardSize.columns) * scaleFactor + 5.0,
                 height: CGFloat(boardSize.rows) * scaleFactor + 5.0
             )
-            ForEach(blocks, id: \.label) { block in
+            ForEach(blocks) { block in
                 BlockView(
                     block: block,
                     boardSize: self.boardSize,

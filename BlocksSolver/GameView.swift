@@ -10,33 +10,25 @@ import SwiftUI
 
 struct GameView: View {
 
-    let game: Game
-    var masterBlocklabel: String {
-        let masterBlock = game.blocks[game.masterBlockIdx]
-        return masterBlock.label
-    }
+    let solver: BlocksMoveSolver
 
-    @State var gameStates: [GameState]
     @State var index: Int = 0
     @State var loading  = true
     @State var failed  = false
 
-
     var body: some View {
         VStack(spacing: 20) {
-            Text(game.desc)
-                .font(.largeTitle)
             BoardView(
-                boardSize: game.size,
-                blocks: gameStates[index].blocks,
-                masterBlocklabel: masterBlocklabel,
+                boardSize: solver.game.size,
+                blocks: solver.states[index].blocks,
+                masterBlocklabel: solver.game.masterBlocklabel,
                 scaleFactor: 60.0
             )
-
+            .padding()
             if loading {
                 Text("Loading Solution")
-                .onAppear {
-                    self.solve()
+                    .onAppear {
+                        self.solve()
                 }
                 ActivityIndicator(isAnimating: .constant(true), style: .large)
             } else if failed{
@@ -48,7 +40,8 @@ struct GameView: View {
                 }
 
             } else {
-                Text("Moves Remaining: \(gameStates.count - index - 1)")
+                Text("Moves to Goal: \(solver.states.count - index - 1)")
+                    .padding()
                 HStack(alignment: .top) {
                     Spacer()
                     Button(action: {
@@ -58,9 +51,10 @@ struct GameView: View {
                     }) {
                         Text("Previous Move")
                     }
+                    .disabled(index == 0)
                     Spacer()
                     Button(action: {
-                        if self.index < self.gameStates.count - 1 {
+                        if self.index < self.solver.states.count - 1 {
                             self.index = self.index + 1
                         }
                     }) {
@@ -69,18 +63,18 @@ struct GameView: View {
                     Spacer()
                 }
             }
+            Spacer()
         }
+        .navigationBarTitle(solver.game.desc)
     }
 
     private func solve() {
-        DispatchQueue.global(qos: .background).async {
-            let solver = BlocksMoveSolver(game: self.game)!
+        DispatchQueue.global(qos: .userInitiated).async {
+            let result = self.solver.solve()
             DispatchQueue.main.async {
-                switch solver.solve() {
-                case .success(let gStates):
-                    self.gameStates = gStates
+                if result {
                     self.loading = false
-                case .failure:
+                } else {
                     self.failed = true
                     self.loading = false
                 }
@@ -92,24 +86,25 @@ struct GameView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(
-            game: Game.klotski,
-            gameStates: [GameState.createInitialStateWith(game: Game.klotski)!]
-        )
+        GameView(solver: BlocksMoveSolver(game: Game.klotski)!)
     }
 }
-
 
 struct ActivityIndicator: UIViewRepresentable {
 
     @Binding var isAnimating: Bool
     let style: UIActivityIndicatorView.Style
 
-    func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
+    func makeUIView(
+        context: UIViewRepresentableContext<ActivityIndicator>
+    ) -> UIActivityIndicatorView {
         return UIActivityIndicatorView(style: style)
     }
 
-    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {
+    func updateUIView(
+        _ uiView: UIActivityIndicatorView,
+        context: UIViewRepresentableContext<ActivityIndicator>
+    ) {
         isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
     }
 }

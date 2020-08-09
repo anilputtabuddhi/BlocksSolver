@@ -27,6 +27,7 @@
 		4D7A649E24DD9736004342C0 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648524DB4882004342C0 /* GameState.swift */; };
 		4DFA35BF24DF07ED00F83EBD /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35BE24DF07ED00F83EBD /* SortedArray.swift */; };
 		4DFA35C424DF27A300F83EBD /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35C324DF27A300F83EBD /* Node.swift */; };
+		4DFA35C924E0071700F83EBD /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35C824E0071700F83EBD /* GameListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		4D7A649C24DD921A004342C0 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4DFA35BE24DF07ED00F83EBD /* SortedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedArray.swift; sourceTree = "<group>"; };
 		4DFA35C324DF27A300F83EBD /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		4DFA35C824E0071700F83EBD /* GameListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +109,10 @@
 			children = (
 				4D7A645F24DB1BE1004342C0 /* AppDelegate.swift */,
 				4D7A646124DB1BE1004342C0 /* SceneDelegate.swift */,
-				4D7A649824DD8178004342C0 /* BlockView.swift */,
-				4D7A649A24DD8426004342C0 /* BoardView.swift */,
+				4DFA35C824E0071700F83EBD /* GameListView.swift */,
 				4D7A649C24DD921A004342C0 /* GameView.swift */,
+				4D7A649A24DD8426004342C0 /* BoardView.swift */,
+				4D7A649824DD8178004342C0 /* BlockView.swift */,
 				4D7A649324DBF97A004342C0 /* Models */,
 				4D7A646524DB1BE4004342C0 /* Assets.xcassets */,
 				4D7A646A24DB1BE4004342C0 /* LaunchScreen.storyboard */,
@@ -274,6 +277,7 @@
 				4D7A648E24DBF932004342C0 /* Size.swift in Sources */,
 				4D7A649B24DD8426004342C0 /* BoardView.swift in Sources */,
 				4D7A648424DB3E80004342C0 /* Board.swift in Sources */,
+				4DFA35C924E0071700F83EBD /* GameListView.swift in Sources */,
 				4DFA35C424DF27A300F83EBD /* Node.swift in Sources */,
 				4D7A648224DB1C00004342C0 /* Game.swift in Sources */,
 				4D7A649E24DD9736004342C0 /* GameState.swift in Sources */,

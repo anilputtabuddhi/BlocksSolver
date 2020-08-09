@@ -8,30 +8,52 @@
 
 import Foundation
 
-enum BlocksSolverError: Error {
-    case couldNotSolve
-}
-
 class BlocksMoveSolver {
 
-    private var states: [GameState]
+    let game: Game
+    private(set) var states: [GameState] = []
+    private let zhashTable: ZobritHashTable
 
     init?(game: Game) {
-        guard let state = GameState.createInitialStateWith(game: game) else {
-            return nil
+        self.game = game
+        self.zhashTable = ZobritHashTable.createFor(game: game)
+
+        guard let board = Board.createBoard(
+            for: game.size,
+            with: game.blocks
+            ) else {
+                return nil
         }
-        self.states = [state]
+
+        let (hash, hashMirror) = zhashTable.getZobristHash(
+            blocks: game.blocks,
+            blockSizeTypes: game.blockSizeTypes,
+            gameSize: game.size,
+            board: board
+        )
+
+        let initialState = GameState(
+            game: game,
+            hashProvider: zhashTable.getZobristHashUpdates,
+            board: board,
+            move: nil,
+            blocks: game.blocks,
+            hash: hash,
+            hashMirror: hashMirror
+        )
+
+        self.states.append(initialState)
     }
 }
 
 // Mark: - Public Interface
 
 extension BlocksMoveSolver {
-    func solve() -> Result<[GameState], BlocksSolverError> {
+    func solve() -> Bool {
 
         let solutionStates = states[0].findPathToGoal()
         if solutionStates.count == 0{
-            return .failure(.couldNotSolve)
+            return false
         }
 
         var optimisedSolutionStates = Array(solutionStates.prefix(2))
@@ -46,6 +68,7 @@ extension BlocksMoveSolver {
             optimisedSolutionStates.append(solutionState)
         }
 
-        return .success(optimisedSolutionStates)
+        self.states = optimisedSolutionStates
+        return true
     }
 }

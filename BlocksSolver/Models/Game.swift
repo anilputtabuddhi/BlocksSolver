@@ -21,22 +21,6 @@ struct Game {
         blocks[masterBlockIdx].label
     }
 
-    private init(
-        desc: String,
-        size: Size,
-        blocks: [Block],
-        masterBlockIdx: Int,
-        masterGoalPosition: Position,
-        blockSizeTypes: [String: Int]
-    ) {
-        self.desc = desc
-        self.size = size
-        self.blocks = blocks
-        self.masterBlockIdx = masterBlockIdx
-        self.masterGoalPosition = masterGoalPosition
-        self.blockSizeTypes = blockSizeTypes
-    }
-
     static func createGame(
         desc: String,
         blocks: [Block],
@@ -71,25 +55,29 @@ struct Game {
 }
 
 extension Game {
+    static let all: [Game] = [.klotski, .unBlockMe]
+}
+
+extension Game {
      static let klotskiBlocks = [
-        Block("B", size: Size(2, 2), position: Position(0, 1)), // B = 0
-        Block("A", size: Size(2, 1), position: Position(0, 0)), // A = 1
-        Block("C", size: Size(2, 1), position: Position(0, 3)), // C = 2
-        Block("D", size: Size(2, 1), position: Position(2, 0)), // D = 3
-        Block("F", size: Size(2, 1), position: Position(2, 3)), // F = 4
-        Block("E", size: Size(1, 2), position: Position(2, 1)), // E = 5
-        Block("I", size: Size(1, 1), position: Position(4, 0)), // I = 6
-        Block("G", size: Size(1, 1), position: Position(3, 1)), // G = 7
-        Block("H", size: Size(1, 1), position: Position(3, 2)), // H = 8
-        Block("J", size: Size(1, 1), position: Position(4, 3)), // J = 9
+        Block("A", id: 0, size: Size(2, 1), position: Position(0, 0)),
+        Block("B", id: 1, size: Size(2, 2), position: Position(0, 1)),
+        Block("C", id: 2, size: Size(2, 1), position: Position(0, 3)),
+        Block("D", id: 3, size: Size(2, 1), position: Position(2, 0)),
+        Block("F", id: 4, size: Size(2, 1), position: Position(2, 3)),
+        Block("E", id: 5, size: Size(1, 2), position: Position(2, 1)),
+        Block("I", id: 6, size: Size(1, 1), position: Position(4, 0)),
+        Block("G", id: 7, size: Size(1, 1), position: Position(3, 1)),
+        Block("H", id: 8, size: Size(1, 1), position: Position(3, 2)),
+        Block("J", id: 9, size: Size(1, 1), position: Position(4, 3)),
     ]
 
     static var klotski = Game.createGame(
-        desc: "Game of Klotski",
+        desc: "Klotski",
         blocks: klotskiBlocks,
         size: Size(5, 4),
         masterGoalPosition: Position(3, 1),
-        masterBlockIdx: 0
+        masterBlockIdx: 1
     )!
 }
 
@@ -98,23 +86,23 @@ extension Game {
     static let lefRight: [Direction] = [.left, .right]
 
      static let unBlockMeBlocks = [
-        Block("A", size: Size(1, 2), position: Position(0, 1), allowedDirections: Game.lefRight),
-        Block("B", size: Size(1, 2), position: Position(2, 2), allowedDirections: Game.lefRight),
-        Block("C", size: Size(1, 2), position: Position(3, 0), allowedDirections: Game.lefRight),
-        Block("D", size: Size(1, 2), position: Position(4, 4), allowedDirections: Game.lefRight),
-        Block("E", size: Size(1, 2), position: Position(5, 1), allowedDirections: Game.lefRight),
-        Block("F", size: Size(1, 2), position: Position(5, 3), allowedDirections: Game.lefRight),
-        Block("G", size: Size(3, 1), position: Position(0, 0), allowedDirections: Game.upDown),
-        Block("H", size: Size(2, 1), position: Position(1, 1), allowedDirections: Game.upDown),
-        Block("I", size: Size(2, 1), position: Position(3, 2), allowedDirections: Game.upDown),
-        Block("J", size: Size(2, 1), position: Position(0, 3), allowedDirections: Game.upDown),
-        Block("K", size: Size(2, 1), position: Position(3, 3), allowedDirections: Game.upDown),
-        Block("L", size: Size(3, 1), position: Position(1, 4), allowedDirections: Game.upDown),
-        Block("M", size: Size(3, 1), position: Position(0, 5), allowedDirections: Game.upDown),
+        Block("A", id: 0, size: Size(1, 2), position: Position(0, 1), allowedDirections: Game.lefRight),
+        Block("B", id: 1, size: Size(1, 2), position: Position(2, 2), allowedDirections: Game.lefRight),
+        Block("C", id: 2, size: Size(1, 2), position: Position(3, 0), allowedDirections: Game.lefRight),
+        Block("D", id: 3, size: Size(1, 2), position: Position(4, 4), allowedDirections: Game.lefRight),
+        Block("E", id: 4, size: Size(1, 2), position: Position(5, 1), allowedDirections: Game.lefRight),
+        Block("F", id: 5, size: Size(1, 2), position: Position(5, 3), allowedDirections: Game.lefRight),
+        Block("G", id: 6, size: Size(3, 1), position: Position(0, 0), allowedDirections: Game.upDown),
+        Block("H", id: 7, size: Size(2, 1), position: Position(1, 1), allowedDirections: Game.upDown),
+        Block("I", id: 8, size: Size(2, 1), position: Position(3, 2), allowedDirections: Game.upDown),
+        Block("J", id: 9, size: Size(2, 1), position: Position(0, 3), allowedDirections: Game.upDown),
+        Block("K", id: 10, size: Size(2, 1), position: Position(3, 3), allowedDirections: Game.upDown),
+        Block("L", id: 11, size: Size(3, 1), position: Position(1, 4), allowedDirections: Game.upDown),
+        Block("M", id: 12, size: Size(3, 1), position: Position(0, 5), allowedDirections: Game.upDown),
     ]
 
     static var unBlockMe = Game.createGame(
-        desc: "UnblockMe Level 701",
+        desc: "UnblockMe",
         blocks: unBlockMeBlocks,
         size: Size(6, 6),
         masterGoalPosition: Position(2, 4),

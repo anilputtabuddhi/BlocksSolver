@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct BlockView: View {
     let block: Block
     let boardSize: Size
@@ -53,7 +51,7 @@ struct BlockView: View {
 struct BlockView_Previews: PreviewProvider {
     static var previews: some View {
         BlockView(
-            block: Block("A", size: Size(3, 1), position: Position(0, 0)),
+            block: Block("A", id: 0, size: Size(3, 1), position: Position(0, 0)),
             boardSize: Size(5, 6),
             scaleFactor: 40,
             isMaster: true

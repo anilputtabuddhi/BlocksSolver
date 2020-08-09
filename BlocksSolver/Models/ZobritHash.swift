@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ZobritHashTable{
+class ZobritHashTable{
 
     private let game: Game
     let table: [[[Int]]]

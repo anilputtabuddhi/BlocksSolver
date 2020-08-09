@@ -23,28 +23,8 @@ struct Board {
         return board.add(blocks)
     }
 
-    func placeBlock(_ block: Block, with blockIdx: Int) -> Board {
-        var newCells = cells
-        for blockRow in 1...block.size.rows {
-            for blockCol in 1...block.size.columns {
-                let rowIndex = block.position.row + blockRow
-                let colIndex = block.position.column + blockCol
-                newCells[rowIndex][colIndex] = blockIdx + 1
-            }
-        }
-        return Board(cells: newCells)
-    }
-
-    func remove(_ block: Block) -> Board {
-        var newCells = cells
-        for blockRow in 1...block.size.rows {
-            for blockCol in 1...block.size.columns {
-                let rowIndex = block.position.row + blockRow
-                let colIndex = block.position.column + blockCol
-                newCells[rowIndex][colIndex] = Board.CELL_EMPTY
-            }
-        }
-        return Board(cells: newCells)
+    func replace(_ block: Block, with newBlock: Block) -> Board {
+        return self.remove(block).place(newBlock)
     }
 
     func can(block: Block, move: Move) -> Bool {
@@ -62,6 +42,34 @@ struct Board {
             }
         }
         return true
+    }
+
+    subscript(row: Int, column: Int) -> Int {
+        return cells[row][column]
+    }
+
+}
+
+extension Board {
+
+    private func place(_ block: Block) -> Board {
+        return set(value: block.id + 1, for: block)
+    }
+
+    private func remove(_ block: Block) -> Board {
+        return set(value: Board.CELL_EMPTY, for: block)
+    }
+
+    private func set(value: Int, for block: Block) -> Board {
+        var newCells = cells
+        for blockRow in 1...block.size.rows {
+            for blockCol in 1...block.size.columns {
+                let rowIndex = block.position.row + blockRow
+                let colIndex = block.position.column + blockCol
+                newCells[rowIndex][colIndex] = value
+            }
+        }
+        return Board(cells: newCells)
     }
 
     private func canPlaceBlock(_ block: Block) -> Bool {
@@ -103,8 +111,8 @@ struct Board {
 
     private func add(_ blocks: [Block]) -> Board? {
         var newBoard: Board? = self
-        for (idx, block) in blocks.enumerated() {
-            guard let board = newBoard?.add(block, with: idx) else {
+        for block in blocks {
+            guard let board = newBoard?.add(block) else {
                 return nil
             }
             newBoard = board
@@ -112,16 +120,10 @@ struct Board {
         return newBoard
     }
 
-    private func add(_ block: Block, with blockIdx: Int) -> Board? {
+    private func add(_ block: Block) -> Board? {
         guard canPlaceBlock(block) else {
             return nil
         }
-        return placeBlock(block, with: blockIdx)
-    }
-}
-
-extension Board {
-    subscript(row: Int, column: Int) -> Int {
-        return cells[row][column]
+        return place(block)
     }
 }
