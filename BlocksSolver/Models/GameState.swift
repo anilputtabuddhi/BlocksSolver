@@ -13,7 +13,7 @@ struct GameState {
     let hashProvider: (GameState, Move) -> (Int, Int)
     let board: Board
     let move: Move?
-    let blocks: [Block]
+    let positions: [Position]
     let hash: Int
     let hashMirror: Int
 }
@@ -22,22 +22,16 @@ struct GameState {
 extension GameState: GraphNode {
 
     var connectedNodes: [GameState] {
-        let moves = blocks.map { block in
-            return block.allowedDirections.map{ dir in
-                Move(blockIdx: block.id, direction: dir)
+        return game.blocks.map(\.allowedMoves)
+            .reduce([], +)
+            .filter { move in
+                board.canBlock(move, from: positions[move.block.id])
             }
-            .filter { move  in
-                board.can(block: block, move: move)
-            }
-
-        }.reduce([], +)
-
-        return moves.compactMap(newStateWithPossibleMove)
-        
+            .map(newStateWithPossibleMove)
     }
 
     var estimatedCostToDestination: Int {
-        let masterBlockCurrentPosition = self.blocks[game.masterBlockIdx].position
+        let masterBlockCurrentPosition = self.positions[game.masterBlockIdx]
         return abs(masterBlockCurrentPosition.column - game.masterGoalPosition.column) +
             abs(masterBlockCurrentPosition.row - game.masterGoalPosition.row)
 
@@ -48,8 +42,7 @@ extension GameState: GraphNode {
     }
 
     var isGoal: Bool {
-        return game.masterGoalPosition ==
-            blocks[game.masterBlockIdx].position
+        return game.masterGoalPosition == positions[game.masterBlockIdx]
     }
 
 }
@@ -59,27 +52,19 @@ extension GameState {
     private func newStateWithPossibleMove(_ move: Move) -> GameState {
 
         let (newHash, newHashMirror) = hashProvider(self, move)
-
-        let block = blocks[move.blockIdx]
-        let dir = Direction.allInCoordinates[move.direction.rawValue]
-        let newBlock = block.withNewPosition(
-            Position(
-                block.position.row + dir.y,
-                block.position.column + dir.x
-            )
-        )
-
-        let newBoard = board.replace(block, with: newBlock)
-
-        var newBlocks = blocks
-        newBlocks[newBlock.id] = newBlock
+        let block = move.block
+        let position = positions[block.id]
+        let newPosition = position.newPositionBy(movingTo: move.direction)
+        let newBoard = board.move(block, from: position, to: newPosition)
+        var newPositions = positions
+        newPositions[block.id] = newPosition
 
         return GameState(
             game: self.game,
             hashProvider: self.hashProvider,
             board: newBoard,
             move: move,
-            blocks: newBlocks,
+            positions: newPositions,
             hash: newHash,
             hashMirror: newHashMirror
         )

@@ -15,28 +15,37 @@ struct Board {
 
     private let cells: [[Int]]
 
+}
+
+// Mark: - Public Interface
+
+extension Board {
+
     static func createBoard(
         for gameSize: Size,
-        with blocks: [Block]
+        with blocks: [Block],
+        in positions: [Position]
     ) -> Board? {
         let board = Board.createEmpty(gameSize: gameSize)
-        return board.add(blocks)
+        return board.add(blocks, in: positions)
     }
 
-    func replace(_ block: Block, with newBlock: Block) -> Board {
-        return self.remove(block).place(newBlock)
+    func move(_ block: Block,
+              from position: Position,
+              to newPosition: Position
+    ) -> Board {
+        return self.remove(block, in: position).place(block, in: newPosition)
     }
 
-    func can(block: Block, move: Move) -> Bool {
+    func canBlock(_ move: Move, from position: Position) -> Bool {
 
         let dir = Direction.allInCoordinates[move.direction.rawValue]
-
-        for blockRow in 1...block.size.rows {
-            for blockColumn in 1...block.size.columns {
-                let rowIndex = block.position.row + dir.y + blockRow
-                let colIndex = block.position.column + dir.x + blockColumn
+        for blockRow in 1...move.block.size.rows {
+            for blockColumn in 1...move.block.size.columns {
+                let rowIndex = position.row + dir.y + blockRow
+                let colIndex = position.column + dir.x + blockColumn
                 let val = cells[rowIndex][colIndex]
-                if (val != Board.CELL_EMPTY && val != move.blockIdx + 1) {
+                if (val != Board.CELL_EMPTY && val != move.block.id + 1) {
                     return false
                 }
             }
@@ -47,43 +56,11 @@ struct Board {
     subscript(row: Int, column: Int) -> Int {
         return cells[row][column]
     }
-
 }
 
+// Mark: - Private methods
+
 extension Board {
-
-    private func place(_ block: Block) -> Board {
-        return set(value: block.id + 1, for: block)
-    }
-
-    private func remove(_ block: Block) -> Board {
-        return set(value: Board.CELL_EMPTY, for: block)
-    }
-
-    private func set(value: Int, for block: Block) -> Board {
-        var newCells = cells
-        for blockRow in 1...block.size.rows {
-            for blockCol in 1...block.size.columns {
-                let rowIndex = block.position.row + blockRow
-                let colIndex = block.position.column + blockCol
-                newCells[rowIndex][colIndex] = value
-            }
-        }
-        return Board(cells: newCells)
-    }
-
-    private func canPlaceBlock(_ block: Block) -> Bool {
-        for row in 1...block.size.rows {
-            for col in 1...block.size.columns {
-                let rowIndex = block.position.row + row
-                let colIndex = block.position.column + col
-                if cells[rowIndex][colIndex] != Board.CELL_EMPTY {
-                    return false
-                }
-            }
-        }
-        return true
-    }
 
     private static func createEmpty(
         gameSize: Size
@@ -109,10 +86,10 @@ extension Board {
         return Board(cells: cells)
     }
 
-    private func add(_ blocks: [Block]) -> Board? {
+    private func add(_ blocks: [Block], in positions: [Position]) -> Board? {
         var newBoard: Board? = self
-        for block in blocks {
-            guard let board = newBoard?.add(block) else {
+        for (block, position) in zip(blocks, positions) {
+            guard let board = newBoard?.add(block, in: position) else {
                 return nil
             }
             newBoard = board
@@ -120,10 +97,43 @@ extension Board {
         return newBoard
     }
 
-    private func add(_ block: Block) -> Board? {
-        guard canPlaceBlock(block) else {
+    private func add(_ block: Block, in position: Position) -> Board? {
+        guard canPlaceBlock(block, in: position) else {
             return nil
         }
-        return place(block)
+        return place(block, in: position)
+    }
+
+    private func place(_ block: Block, in position: Position) -> Board {
+        return set(value: block.id + 1, for: block, in: position)
+    }
+
+    private func remove(_ block: Block, in position: Position) -> Board {
+        return set(value: Board.CELL_EMPTY, for: block, in: position)
+    }
+
+    private func set(value: Int, for block: Block, in position: Position) -> Board {
+        var newCells = cells
+        for blockRow in 1...block.size.rows {
+            for blockCol in 1...block.size.columns {
+                let rowIndex = position.row + blockRow
+                let colIndex = position.column + blockCol
+                newCells[rowIndex][colIndex] = value
+            }
+        }
+        return Board(cells: newCells)
+    }
+
+    private func canPlaceBlock(_ block: Block, in position: Position) -> Bool {
+        for row in 1...block.size.rows {
+            for col in 1...block.size.columns {
+                let rowIndex = position.row + row
+                let colIndex = position.column + col
+                if cells[rowIndex][colIndex] != Board.CELL_EMPTY {
+                    return false
+                }
+            }
+        }
+        return true
     }
 }

@@ -9,11 +9,11 @@
 import Foundation
 
 struct Move: Equatable {
-    let blockIdx: Int
+    let block: Block
     let direction: Direction
 
-    init(blockIdx: Int, direction: Direction) {
-        self.blockIdx = blockIdx
+    init(_ block: Block, _ direction: Direction) {
+        self.block = block
         self.direction = direction
     }
 }

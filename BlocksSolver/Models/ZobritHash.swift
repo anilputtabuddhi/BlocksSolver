@@ -83,14 +83,15 @@ class ZobritHashTable{
         isMirror: Bool
     ) -> Int {
         var hash = isMirror ? state.hashMirror : state.hash
-        let block = state.blocks[move.blockIdx]
+        let block = move.block
+        let position = state.positions[move.block.id]
         let gameSize = game.size
         let blockSize = block.size
-        let row = block.position.row
+        let row = position.row
         let type = game.blockSizeTypes[blockSize.asString]!
         let col = isMirror ?
-            gameSize.columns - 1 - block.position.column
-            : block.position.column
+            gameSize.columns - 1 - position.column
+            : position.column
         let dx = isMirror ? -1 : 1
         let dirIdx = move.direction.rawValue
         let directions = Direction.allInCoordinates

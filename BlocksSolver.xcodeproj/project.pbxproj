@@ -12,7 +12,6 @@
 		4D7A646624DB1BE4004342C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D7A646524DB1BE4004342C0 /* Assets.xcassets */; };
 		4D7A646924DB1BE4004342C0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D7A646824DB1BE4004342C0 /* Preview Assets.xcassets */; };
 		4D7A646C24DB1BE4004342C0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D7A646A24DB1BE4004342C0 /* LaunchScreen.storyboard */; };
-		4D7A647724DB1BE5004342C0 /* BlocksSolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A647624DB1BE5004342C0 /* BlocksSolverTests.swift */; };
 		4D7A648224DB1C00004342C0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648124DB1C00004342C0 /* Game.swift */; };
 		4D7A648424DB3E80004342C0 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648324DB3E80004342C0 /* Board.swift */; };
 		4D7A648A24DB6F3A004342C0 /* ZobritHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7A648924DB6F3A004342C0 /* ZobritHash.swift */; };
@@ -28,6 +27,11 @@
 		4DFA35BF24DF07ED00F83EBD /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35BE24DF07ED00F83EBD /* SortedArray.swift */; };
 		4DFA35C424DF27A300F83EBD /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35C324DF27A300F83EBD /* Node.swift */; };
 		4DFA35C924E0071700F83EBD /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35C824E0071700F83EBD /* GameListView.swift */; };
+		4DFA35CB24E05B4E00F83EBD /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35CA24E05B4E00F83EBD /* GameStateTests.swift */; };
+		4DFA35CD24E05D1800F83EBD /* BlocksMoveSolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35CC24E05D1800F83EBD /* BlocksMoveSolverTests.swift */; };
+		4DFA35CF24E061C400F83EBD /* ZobritHashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35CE24E061C400F83EBD /* ZobritHashTests.swift */; };
+		4DFA35D124E0624D00F83EBD /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35D024E0624D00F83EBD /* GameTests.swift */; };
+		4DFA35D324E0637000F83EBD /* BoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA35D224E0637000F83EBD /* BoardTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +53,6 @@
 		4D7A646B24DB1BE4004342C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D7A646D24DB1BE4004342C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D7A647224DB1BE5004342C0 /* BlocksSolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocksSolverTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D7A647624DB1BE5004342C0 /* BlocksSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksSolverTests.swift; sourceTree = "<group>"; };
 		4D7A647824DB1BE5004342C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D7A648124DB1C00004342C0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		4D7A648324DB3E80004342C0 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -66,6 +69,11 @@
 		4DFA35BE24DF07ED00F83EBD /* SortedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedArray.swift; sourceTree = "<group>"; };
 		4DFA35C324DF27A300F83EBD /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		4DFA35C824E0071700F83EBD /* GameListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
+		4DFA35CA24E05B4E00F83EBD /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
+		4DFA35CC24E05D1800F83EBD /* BlocksMoveSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksMoveSolverTests.swift; sourceTree = "<group>"; };
+		4DFA35CE24E061C400F83EBD /* ZobritHashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZobritHashTests.swift; sourceTree = "<group>"; };
+		4DFA35D024E0624D00F83EBD /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
+		4DFA35D224E0637000F83EBD /* BoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +141,11 @@
 		4D7A647524DB1BE5004342C0 /* BlocksSolverTests */ = {
 			isa = PBXGroup;
 			children = (
-				4D7A647624DB1BE5004342C0 /* BlocksSolverTests.swift */,
+				4DFA35CE24E061C400F83EBD /* ZobritHashTests.swift */,
+				4DFA35CC24E05D1800F83EBD /* BlocksMoveSolverTests.swift */,
+				4DFA35CA24E05B4E00F83EBD /* GameStateTests.swift */,
+				4DFA35D024E0624D00F83EBD /* GameTests.swift */,
+				4DFA35D224E0637000F83EBD /* BoardTests.swift */,
 				4D7A647824DB1BE5004342C0 /* Info.plist */,
 			);
 			path = BlocksSolverTests;
@@ -290,7 +302,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D7A647724DB1BE5004342C0 /* BlocksSolverTests.swift in Sources */,
+				4DFA35CF24E061C400F83EBD /* ZobritHashTests.swift in Sources */,
+				4DFA35D324E0637000F83EBD /* BoardTests.swift in Sources */,
+				4DFA35CD24E05D1800F83EBD /* BlocksMoveSolverTests.swift in Sources */,
+				4DFA35CB24E05B4E00F83EBD /* GameStateTests.swift in Sources */,
+				4DFA35D124E0624D00F83EBD /* GameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

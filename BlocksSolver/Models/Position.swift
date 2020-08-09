@@ -16,4 +16,12 @@ struct Position: Equatable {
         self.row = row
         self.column = column
     }
+
+    func newPositionBy(movingTo direction: Direction) -> Position {
+        let dir = Direction.allInCoordinates[direction.rawValue]
+        return Position(
+            row + dir.y,
+            column + dir.x
+        )
+    }
 }

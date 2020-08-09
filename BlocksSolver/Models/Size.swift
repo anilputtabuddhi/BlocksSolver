@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Size {
+struct Size: Equatable {
     let rows: Int
     let columns: Int
 

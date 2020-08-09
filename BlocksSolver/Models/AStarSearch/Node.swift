@@ -99,11 +99,11 @@ extension GraphNode {
             }
 
             eliminatedNodes[currentStep.node.hash] = true
-            //eliminatedNodes[currentStep.node.hashMirror] = true
+            eliminatedNodes[currentStep.node.hashMirror] = true
 
             let nextNodes = currentStep.node.connectedNodes.filter { node in
-                eliminatedNodes[node.hash] != true //&&
-                //eliminatedNodes[node.hashMirror] != true
+                eliminatedNodes[node.hash] != true &&
+                eliminatedNodes[node.hashMirror] != true
             }
 
             for node in nextNodes {

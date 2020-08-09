@@ -20,8 +20,9 @@ class BlocksMoveSolver {
 
         guard let board = Board.createBoard(
             for: game.size,
-            with: game.blocks
-            ) else {
+            with: game.blocks,
+            in: game.initialBlockPositions
+        ) else {
                 return nil
         }
 
@@ -37,7 +38,7 @@ class BlocksMoveSolver {
             hashProvider: zhashTable.getZobristHashUpdates,
             board: board,
             move: nil,
-            blocks: game.blocks,
+            positions: game.initialBlockPositions,
             hash: hash,
             hashMirror: hashMirror
         )
@@ -62,7 +63,7 @@ extension BlocksMoveSolver {
             if let previousMove = optimisedSolutionStates.last?.move,
                 let currentMove = solutionState.move,
                 previousMove.direction == currentMove.direction &&
-                    previousMove.blockIdx == currentMove.blockIdx {
+                    previousMove.block == currentMove.block {
                 optimisedSolutionStates.removeLast()
             }
             optimisedSolutionStates.append(solutionState)

@@ -16,21 +16,32 @@ struct GameView: View {
     @State var loading  = true
     @State var failed  = false
 
+    private var remainingMoves: Int {
+        return solver.states.count - index - 1
+    }
+
     var body: some View {
-        VStack(spacing: 20) {
+        VStack() {
             BoardView(
                 boardSize: solver.game.size,
-                blocks: solver.states[index].blocks,
-                masterBlocklabel: solver.game.masterBlocklabel,
+                blocks: solver.game.blocks,
+                positions: solver.states[index].positions,
+                masterBlockId: solver.game.masterBlockIdx,
                 scaleFactor: 60.0
             )
-            .padding()
+                .padding()
             if loading {
-                Text("Loading Solution")
-                    .onAppear {
-                        self.solve()
+                VStack {
+                    Text("Loading Solution")
+                        .onAppear {
+                            self.solve()
+                    }
+                    ActivityIndicator(
+                        isAnimating: .constant(true),
+                        style: .large
+                    )
                 }
-                ActivityIndicator(isAnimating: .constant(true), style: .large)
+                .padding()
             } else if failed{
                 Text("Failed in finding a solution")
                 Button(action: {
@@ -40,28 +51,34 @@ struct GameView: View {
                 }
 
             } else {
-                Text("Moves to Goal: \(solver.states.count - index - 1)")
-                    .padding()
-                HStack(alignment: .top) {
-                    Spacer()
+                HStack() {
                     Button(action: {
                         if self.index > 0 {
                             self.index = self.index - 1
                         }
                     }) {
-                        Text("Previous Move")
+                        Text("Previous")
                     }
                     .disabled(index == 0)
                     Spacer()
-                    Button(action: {
-                        if self.index < self.solver.states.count - 1 {
-                            self.index = self.index + 1
-                        }
-                    }) {
-                        Text("Next Move")
+                    VStack{
+                        Text("\(remainingMoves)")
+                            .font(.largeTitle)
+                        Text("\(remainingMoves == 1 ? "move": "moves") to goal")
+                            .foregroundColor(.secondary)
+                            .font(.subheadline)
+                            .italic()
                     }
                     Spacer()
+                    Button(action: {
+                        self.index = self.index + 1
+                    }) {
+                        Text("Next")
+                    }
+                    .disabled(index == self.solver.states.count - 1 )
                 }
+                .padding()
+                
             }
             Spacer()
         }

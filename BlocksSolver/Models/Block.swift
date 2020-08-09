@@ -8,34 +8,28 @@
 
 import Foundation
 
-struct Block: Identifiable {
+struct Block: Identifiable, Equatable {
     let label: String
     let id: Int
     let size: Size
-    let position: Position
     let allowedDirections: [Direction]
 
     init(
         _ label: String,
         id: Int,
         size: Size,
-        position: Position,
         allowedDirections: [Direction] = Direction.allCases
     ) {
         self.label = label
         self.id = id
         self.size = size
-        self.position = position
         self.allowedDirections = allowedDirections
     }
 
-    func withNewPosition(_ position: Position) -> Block {
-        Block(
-            self.label,
-            id: self.id,
-            size: self.size,
-            position: position,
-            allowedDirections: allowedDirections
-        )
+    var allowedMoves: [Move]  {
+        return allowedDirections.map { direction in
+            Move(self, direction)
+        }
     }
+
 }

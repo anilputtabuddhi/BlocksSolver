@@ -10,9 +10,11 @@ import SwiftUI
 
 struct BlockView: View {
     let block: Block
+    let position: Position
     let boardSize: Size
     let scaleFactor: CGFloat
-    let isMaster: Bool
+    let fillColor: Color
+    let borderColor: Color
 
     var body: some View {
         Text("\(block.label)")
@@ -20,9 +22,11 @@ struct BlockView: View {
                 width: CGFloat(block.size.columns) * scaleFactor,
                 height: CGFloat(block.size.rows) * scaleFactor
             )
-            .background(isMaster ? Color.blue: Color.red)
-            .border(Color.black, width: 1)
+            .background(fillColor)
+            .border(borderColor, width: 1)
             .offset(x: xOffsetFor(block), y: yOffsetFor(block))
+            .shadow(radius: 2)
+
     }
 
     private var boardCenter: CGPoint {
@@ -33,8 +37,10 @@ struct BlockView: View {
     }
 
     private var blockCenter: CGPoint {
-        let centerX = ( CGFloat(block.position.column) + CGFloat(block.size.columns) / 2.0) * scaleFactor
-        let centerY = (CGFloat(block.position.row) + CGFloat(block.size.rows) / 2.0) * scaleFactor
+        let centerX = ( CGFloat(position.column) +
+            CGFloat(block.size.columns) / 2.0) * scaleFactor
+        let centerY = ( CGFloat(position.row) +
+            CGFloat(block.size.rows) / 2.0) * scaleFactor
 
         return CGPoint(x: centerX, y: centerY)
     }
@@ -51,10 +57,16 @@ struct BlockView: View {
 struct BlockView_Previews: PreviewProvider {
     static var previews: some View {
         BlockView(
-            block: Block("A", id: 0, size: Size(3, 1), position: Position(0, 0)),
+            block: Block(
+                "A",
+                id: 0,
+                size: Size(3, 1)
+            ),
+            position: Position(0, 0),
             boardSize: Size(5, 6),
             scaleFactor: 40,
-            isMaster: true
+            fillColor: Color.clear,
+            borderColor: Color.blue
         )
     }
 }
